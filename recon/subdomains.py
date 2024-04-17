@@ -57,7 +57,7 @@ def save_subdomains(domain,subdomains):
     print(f"Saved {len(subdomains)} subdomains to {filename}")
 
 if __name__ == "__main__":
-    target_domain = "pointlessai.com"  # input("Enter target domain: ")
+    target_domain = "opnx.com"  # input("Enter target domain: ")
     subdomains = get_subdomains_from_crt(target_domain)
     if subdomains:
         print(f"Found {len(subdomains)} subdomains for {target_domain}")

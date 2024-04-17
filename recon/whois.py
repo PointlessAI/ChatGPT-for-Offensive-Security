@@ -13,7 +13,7 @@ Prerequisites:
 python -m venv exp-venv
 python source exp-venv/bin/activate
 # Install dependencies
-python -m pip install --upgrade -r /setup/requirements.txt
+python -m pip install --upgrade -r requirements.txt
 """
 
 """
@@ -30,6 +30,7 @@ https://gist.github.com/jhaddix/86a06c5dc309d08580a018c66354a056
 https://github.com/danielmiessler/SecLists
 https://github.com/danielmiessler/SecLists/blob/master/Discovery/DNS/subdomains-top1million-110000.txt
 """
+
 
 import dns.resolver
 from openai import OpenAI
@@ -53,27 +54,20 @@ def query_whois(domain):
 # DNS and Subdomain Analysis
 def find_subdomains(domain, subdomain_list):
     found_subdomains = []
-    dns_fail = 0
     for subdomain in subdomain_list:
         try:
             addresses = dns.resolver.resolve(f"{subdomain}.{domain}", "A")
             for ip in addresses:
                 found_subdomains.append(f"{subdomain}.{domain} resolves to {ip}")
-        except (dns.resolver.LifetimeTimeout, dns.resolver.NXDOMAIN, dns.resolver.Timeout, dns.resolver.NoAnswer):
-            print(f"DNS resolution error {dns_fail+1}/3")
-            dns_fail += 1
-            if dns_fail > 2:
-                return 3
+        except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
             continue
-        except Exception as e:
-            print("An unexpected error occurred:", e)
-            continue
-
     return found_subdomains
 
-# IP Range Correlation (Not yet implemented)
+# IP Range Correlation (Pseudocode)
 def correlate_ip_ranges(ip_ranges, known_data):
-    # Compare known IP ranges with any gathered or known information
+    # This function would compare known IP ranges with any gathered or known information
+    # about potential targets. This might involve querying additional databases,
+    # cross-referencing with known vulnerabilities, etc.
     pass
 
 # Interpreting Scan Results with ChatGPT
@@ -93,9 +87,13 @@ def analyze_scan_results_with_chatgpt(scan_results):
     return response.choices[0].message.content
 
 if __name__ == "__main__":
-    target_domain = "opnx.com" #input("Enter a target domain E.G. pointlessai.com: ")
+    target_domain = "pointlessai.com" #input("Enter a target domain E.G. pointlessai.com: ")
     target_domain = "https://"+target_domain
     print(f"Gathering domain information for: {target_domain}")
     
     domain_info = query_whois(target_domain)
     print(domain_info)
+
+    #subdomain_list=["mail","www","smtp","test"]
+    #subdomain_info = find_subdomains(target_domain, subdomain_list)
+    #print(subdomain_info)
