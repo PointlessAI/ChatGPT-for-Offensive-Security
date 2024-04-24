@@ -1,6 +1,0 @@
-Automating Exploit Code Generation
-Fuzzing with ChatGPT
-Bypassing Security Controls
-Session Hijacking and Token Manipulation
-Exploiting File Upload Vulnerabilities
-Automating Post-Exploitation Activities
