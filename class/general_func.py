@@ -26,3 +26,14 @@ class General_Func:
         log_file = self.read_file(filepath, filename, "log")
         print(log_file)
         return log_file
+
+    def clean_filename(self,name):
+        # Cleans up file or folder names
+        # Remove any trailing whitespace including newline character
+        filename = name.strip()
+        # Convert to lowercase
+        lower_case_filename = filename.lower()
+        # Replace spaces with dashes
+        dash_filename = lower_case_filename.replace(" ", "-")
+        return dash_filename
+
