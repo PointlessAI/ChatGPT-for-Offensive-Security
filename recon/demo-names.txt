@@ -2,6 +2,3 @@ Reconnaissance with ChatGPT
 Domain and IP Information Gathering
 Social Media and Open Source Intelligence
 Email Phishing Reconnaissance
-Automated Vulnerability Identification
-Custom Tool Development with ChatGPT
-Network Footprinting

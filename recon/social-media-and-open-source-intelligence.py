@@ -1,5 +1,5 @@
 """
-Exploiting Application Function with ChatGPT
+Reconnaissance Techniques Using ChatGPT
 Social Media and Open Source Intelligence
 ["Implement ChatGPT to analyze social media posts, extracting potential security lapses or useful information about the target's infrastructure.", 'Apply ChatGPT to process data from forums and tech blogs for mentions of the target and related vulnerabilities.', 'Use ChatGPT to summarize news articles and reports that mention the target, identifying potential entry points.', 'Train ChatGPT to recognize patterns in data leakage across various online platforms.']
 This script is for for training purposes only
