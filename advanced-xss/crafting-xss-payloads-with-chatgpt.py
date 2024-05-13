@@ -1,1 +1,0 @@
-# crafting-xss-payloads-with-chatgpt
