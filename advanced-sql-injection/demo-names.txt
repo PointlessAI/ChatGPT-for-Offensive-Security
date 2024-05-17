@@ -1,6 +1,0 @@
-Crafting SQLi Payloads
-Automating Vulnerability Discovery
-Exploiting Advanced SQLi Techniques
-Database Fingerprinting and Data Exfiltration
-Bypassing Advanced Security Measures
-Post-Exploitation Strategies
