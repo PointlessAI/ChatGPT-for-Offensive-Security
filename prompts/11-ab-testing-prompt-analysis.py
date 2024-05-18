@@ -32,20 +32,14 @@ class PointlessAI_techniques_for_prompt_analysis(ChatGPT_Func, General_Func):
             "Pattern identification: Identify recurring themes or deficiencies in responses to guide refinements.",
             "Comparative testing: Use A/B testing to compare the effectiveness of different prompt variations."
         ]
-        # Traditional pen testing method (Placeholder for demonstration. Replace with actual method.)
-        traditional_response = "Traditional method response"
         
         # ChatGPT-based analysis
         for prompt in prompts:
             c_response = self.red_team_query(prompt, self.no_markdown)
             responses[prompt] = c_response
         
-        # Assume save_file and print were part of General_Func for illustrative purposes
-        # Saving responses for review
         for prompt, response in responses.items():
             print(f"Prompt: {prompt}\n ChatGPT Response: {response}\n\n")
-            # This line would save each response to a separate text file
-            # self.save_file(response, current_dir, prompt[:10], "txt")
 
         return responses
 

@@ -20,7 +20,7 @@ class PointlessAI_advanced_prompt_structures(ChatGPT_Func, General_Func):
         General_Func.__init__(self)
 
     def execute_chain_of_thought(self, target):
-        prompt = f"Provide detailed logical steps to analyze potential vulnerabilities in {target} using advanced prompt structures"
+        prompt = f"Provide detailed logical steps to analyze potential vulnerabilities in {target}"
         guidance = "Provide a series of logical steps, considering different aspects of the system, such as entry points, data flow, and potential weaknesses."
         analysis_steps = self.red_team_query(prompt, guidance)
         print("Analysis Steps:")
