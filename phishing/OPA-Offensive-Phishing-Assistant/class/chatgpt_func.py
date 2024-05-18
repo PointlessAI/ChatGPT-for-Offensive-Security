@@ -34,7 +34,7 @@ class ChatGPT_Func:
     def red_team_query(self, prompt, guidance):
         # Guidance example: self.no_markdown
         response = self.client.chat.completions.create(
-            model="gpt-4o",#"gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": f"You are a penetration tester. You provide assistance to a red team."},
                 {"role": "assistant", "content": f"{guidance}"},
