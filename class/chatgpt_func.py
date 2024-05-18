@@ -19,12 +19,9 @@ class ChatGPT_Func:
         self.google_api_key = os.environ.get("google_api_key")
         self.google_cse_id = os.environ.get("google_cse_id")
 
-        api_key = 'AIzaSyA4mrDI68iynEqeOlEReYJSYJ6kO9e9dd8'
-    cse_id = '81a7285d41aea4983'
-
     def general_query(self, prompt):
         response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": f"You are a helpful assistant."},
                 {"role": "user", "content": prompt},
@@ -37,7 +34,7 @@ class ChatGPT_Func:
     def red_team_query(self, prompt, guidance):
         # Guidance example: self.no_markdown
         response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": f"You are a penetration tester. You provide assistance to a red team."},
                 {"role": "assistant", "content": f"{guidance}"},
@@ -50,7 +47,7 @@ class ChatGPT_Func:
 
     def json_query(self,prompt):
         response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a JSON code generation assistant. You are designed to output JSON"},
                 {"role": "user", "content": prompt},
