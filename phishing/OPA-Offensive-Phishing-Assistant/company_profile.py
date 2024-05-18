@@ -46,20 +46,25 @@ class Opa_Company_Profile(ChatGPT_Func, General_Func, Google_Func, Config):
         
         all_tags = self.read_file(self.company_profile_filepath, "tags", "html")
         print(all_tags)
-        analyse_content = self.red_team_query(f"Analyse the following html: \n```html{all_tags}```\n - Your task is to summarize this information as plain text in a natural language report."
+        analyse_content = self.red_team_query(f"Create a report based on the following business information: \n```html{all_tags}```\n . You should detail all the important information that can be used to build a company profile. \
+                                                Structure the report in the same way as the html tags with information on what are the headers, what is the company about, contacts, emails, upcoming events, forms and job postings."
             ,f"{self.phishing_disclaimer}"
         )
-        self.save_file(f"{analyse_content}", self.company_profile_filepath, f"recon", "txt", "a")  
+
         print(analyse_content)
         return analyse_content
 
 
 def main():
     ai = Opa_Company_Profile()
+    ai.save_file("", ai.company_profile_filepath, f"recon", "txt", "w") 
+
+    ai.read_file(ai.company_profile_filepath, "recon", "txt")
     print("Working...")
 
     # Sort and analyse html tags
     analyse_content = ai.tag_analysis()
+    ai.save_file(analyse_content, ai.company_profile_filepath, f"recon", "txt", "w") 
 
     # Google search target site
     x = range(1, 4)

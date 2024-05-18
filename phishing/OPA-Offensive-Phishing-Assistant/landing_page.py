@@ -19,6 +19,7 @@ class Landing_Page(ChatGPT_Func, General_Func, Config):
         ChatGPT_Func.__init__(self)
         General_Func.__init__(self)
         Config.__init__(self)
+        self.company_profile = self.read_file(self.company_profile_filepath, "recon", "txt")
         
     def generate_landing_page(self, email_context):
         prompt = f"Develop a convincing phishing simulation landing page for  the company: {self.company_name}. Users will land on the page after clicking the following email message: {email_context}. \

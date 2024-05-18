@@ -43,14 +43,8 @@ class Config():
         def create_file_if_not_exists(filename):
             # Check if the file already exists
             if not os.path.exists(filename):
-                print(f"Company profile has not been generated. Run company_profile.py before proceeding.")
                 sys.exit(0)
             else:
                 # File does not exist, create it by opening in write mode
-                with open(filename, 'w') as file:
+                with open(filename, 'a') as file:
                     file.write('')  # Write an empty string just to create the file
-    
-        print(f"Running {sys.argv[0]}")
-        if (sys.argv[0] != "company_profile.py" and sys.argv[0] != "main.py" and sys.argv[0] != "strategy.py" ):
-            create_file_if_not_exists(f"{self.company_profile_filepath}/recon.txt")
-            self.company_profile = self.read_file(self.company_profile_filepath, "recon", "txt")

@@ -1,0 +1,57 @@
+# An Introductory Guide to Phishing
+
+## Introduction
+Welcome to the phishing training module, part of our ongoing commitment to cybersecurity awareness. This guide is designed to help you understand phishing, recognize common techniques used by attackers, and learn how to protect yourself and our organization. By staying informed and vigilant, you become a crucial line of defense in safeguarding sensitive information.
+
+## Methods of Phishing
+Phishing is a type of cyberattack involving fraudulent attempts to acquire sensitive information through deceitful means. Below are some common phishing methods:
+
+### 1. Email Phishing
+Attackers send spoofed emails disguised as legitimate correspondence, often containing malicious links or attachments. These emails may appear to come from trusted organizations or colleagues, tricking recipients into divulging personal or corporate information.
+
+### 2. Spear Phishing
+Unlike generalized email phishing, spear phishing targets specific individuals or organizations. Attackers customize their messages using personal or organizational details, making them harder to detect. This method often follows extensive reconnaissance on the target.
+
+### 3. Whaling
+This is a specific form of spear phishing targeting high-level executives or key decision-makers within a company. The focus is on high-value information or access, which can have devastating consequences if compromised.
+
+### 4. Smishing (SMS Phishing)
+Phishers use text messages to lure individuals into divulging personal information or visiting malicious websites. These messages may claim to be from banks, service providers, or other trusted entities.
+
+### 5. Vishing (Voice Phishing)
+Attackers use phone calls to trick people into revealing confidential information. They may impersonate IT support, government agencies, or other trusted figures, instilling a false sense of urgency to prompt quick action.
+
+## Current Trends in Phishing
+As defenders improve their measures, phishers evolve their tactics. Some current phishing trends include:
+
+### 1. Sophisticated Spoofing
+Attackers make emails and websites look almost identical to their legitimate counterparts, leveraging subtle differences hard for untrained eyes to detect.
+
+### 2. Business Email Compromise (BEC)
+Using compromised or perfectly spoofed emails, attackers manipulate employees into transferring money or sharing sensitive data.
+
+### 3. Ransom-Based Phishing
+Once data is compromised, attackers may threaten to release it unless a ransom is paid. This method combines phishing with ransomware tactics.
+
+### 4. Deepfake Phishing
+Advanced AI technologies create highly persuasive audio or video messages that mimic genuine senders, further complicating the detection process.
+
+## Phishing vs. Social Engineering
+Phishing and social engineering are closely related but distinct concepts. Social engineering encompasses a broader set of techniques used to manipulate people into revealing confidential information. Phishing is a subset of social engineering specifically using fraudulent digital communications.
+
+While phishing primarily leverages technology, social engineering can include face-to-face interactions, manipulation over the phone, or any other means to exploit trust and extract information.
+
+## How It Affects You
+Phishing can have significant personal and organizational impacts:
+
+### 1. Personal Harm
+Attackers may use stolen information for identity theft, financial fraud, or unauthorized access to personal accounts, leading to loss of privacy and financial assets.
+
+### 2. Organizational Risk
+Phishing attacks can jeopardize confidential information, intellectual property, and customer data, resulting in financial loss, legal repercussions, and reputational damage. Employees compromised can inadvertently serve as gateways to further attacks on the network.
+
+### 1. Loss of Productivity
+Responding to and mitigating phishing attacks can consume significant time and resources, detracting from productive work.
+
+## Conclusion
+Understanding phishing and staying vigilant against such attacks is crucial for maintaining cybersecurity. Recognizing common tactics and knowing how to respond can protect both personal information and our organization's assets. Stay suspicious of unsolicited requests for information, verify sources independently, and report suspicious communications immediately. Together, we can maintain a strong defense against phishing attacks!

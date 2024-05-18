@@ -22,8 +22,6 @@ class General_Func:
                     result_string = f"Title: {item['title']} - Link: {item['link']} - Snippet: {item['snippet']}\n"
                     # Write the formatted string to the file
                     file.write(result_string)
-                    # Write a separator line to the file
-                    file.write("-" * 80 + "\n")
 
     def read_file(self, filepath, filename, ext):
         with open(f"{filepath}/{filename}.{ext}", 'r') as file:

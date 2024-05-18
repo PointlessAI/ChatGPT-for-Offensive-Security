@@ -24,7 +24,7 @@ class Opa_Strategy(ChatGPT_Func, General_Func, Google_Func, Config):
     def phishing_strategy(self, prompt, filename):
         guidance = f"{self.phishing_disclaimer}"#\n{self.no_markdown}"
         strategy = self.red_team_query(prompt, guidance)
-        self.save_file(strategy, self.filepath, filename, "txt", "w")
+        self.save_file(strategy, self.strategy_filepath, filename, "txt", "w")
         return strategy
     
     def advanced_strategy(self, prompt):
@@ -49,7 +49,7 @@ def main():
     query = "Phishing Trends 2024"
     query_f = ai.clean_filename(query)
     page_one_results = ai.fetch_results(query, num=10, start=1, dateRestrict='m[12]')
-    ai.save_file_html_sort(page_one_results, ai.filepath, f"google_search_{query_f}", "txt", "w")
+    ai.save_file_html_sort(page_one_results, ai.strategy_filepath, f"google_search_{query_f}", "txt", "w")
 
     # Analyse Google search results and provide summary
     current_phishing_methods_analysis = ai.general_query(f"Analyse the search results in {page_one_results} and provide an assessment of current {query}.")
