@@ -1,4 +1,0 @@
-1. Report generation - red team and bug bounty
-2. Code and log analysis
-3. Malware development and refinement
-4. Testing
