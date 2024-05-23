@@ -38,7 +38,7 @@ def main():
         filename = "dummy"
 
         # Generate dummy logs
-        log_file = ai.fake_logs("apache web server", filepath, filename, "py")
+        log_file = ai.fake_logs("centos server", filepath, filename, "py")
         # Alternatively read log from file
         """
         log_file = ai.read_file(filepath, filename, "log")

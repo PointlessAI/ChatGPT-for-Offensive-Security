@@ -31,7 +31,7 @@ class Opa_Company_Profile(ChatGPT_Func, General_Func, Google_Func, Config):
         # Analyse HTML
         site = requests.get(self.target)
         tag_name = [
-            "head", "title", "meta", 
+            "head", 
             "h1", "h2", "h3", "h4", "h5", "h6", "p", "a", "img", 
             "span", "ul", "li", "table", "link", "script", "form"
         ]

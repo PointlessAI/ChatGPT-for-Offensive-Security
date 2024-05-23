@@ -1,10 +1,17 @@
 import os
 import requests
 import json
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
 
 class General_Func:
     def __init__(self):
-        pass
+        self.home_dir = "/home/kali/shellassistant/training-assistant/offensive-security-chatgpt"
+        self.recon_dir = self.home_dir + "/recon"
+        self.web_app_hack_dir = self.home_dir + "/web-application-hacking"
+        self.sql_injection_dir = self.home_dir + "/advanced-sql-injection"
 
     def save_file(self, content, filepath, filename, ext):
         with open(f"{filepath}/{filename}.{ext}", 'w') as file:
@@ -36,4 +43,20 @@ class General_Func:
         # Replace spaces with dashes
         dash_filename = lower_case_filename.replace(" ", "-")
         return dash_filename
+    
+    def selenium_test(self, url, cookie_name, cookie_value):
+        driver = webdriver.Chrome()
+        driver.get(url)
+
+        # Use existing session id cookie
+        cookie = {'name': cookie_name, 'value': cookie_value}
+        driver.add_cookie(cookie)
+
+        # Get page to check for XSS success
+        driver.get(url)
+        page_content = driver.page_source
+        time.sleep(2)
+        driver.quit()
+
+        return url, page_content
 

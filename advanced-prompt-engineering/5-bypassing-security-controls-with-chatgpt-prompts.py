@@ -43,7 +43,7 @@ class PointlessAI_bypassing_security_controls_with_chatgpt_prompts(ChatGPT_Func,
         return(filename)
 
 def main():
-    target_url = "https://brokencrystals.com/"
+    target_url = "https://pointlessai.com/"
     ai = PointlessAI_bypassing_security_controls_with_chatgpt_prompts()
     print("Probing security controls:")
     probe_prompts = ai.probe_security_controls(target_url)

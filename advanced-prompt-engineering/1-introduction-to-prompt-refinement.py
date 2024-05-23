@@ -20,7 +20,7 @@ class PointlessAI_introduction_to_prompt_refinement(ChatGPT_Func, General_Func):
         General_Func.__init__(self)
 
     def refine_prompts(self, prompt):
-        guidance = ""
+        guidance = f"{self.no_markdown} {self.phishing_disclaimer}"
         res = self.red_team_query(prompt, guidance)
         print(f"{res}\n-------------------------------\n")
         return res

@@ -37,6 +37,9 @@ class PointlessAI_establishing_effective_feedback_loops(ChatGPT_Func, General_Fu
         """
         # This is for demonstration; an actual implementation would analyze the response
         # against the metrics provided to determine effectiveness.
+        # score = 10
+        # if response contains 'login succesful' then score = 10
+        # if response contains 'error' then score +=2
         effectiveness_score = 10 # Implement test cases here
         return effectiveness_score
 

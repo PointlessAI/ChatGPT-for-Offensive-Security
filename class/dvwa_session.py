@@ -5,7 +5,7 @@ class DVWA_Session:
     login_url = base_url + "/login.php"
     sql_injection = f"{base_url}/vulnerabilities/sqli/"
 
-    proxies = {"http": "http://127.0.0.1:8080"}
+    proxies = {"http": "http://127.0.0.1:"}
     headers = {
         "Host": "127.0.0.1",
         "Cache-Control": "max-age=0",
@@ -24,12 +24,12 @@ class DVWA_Session:
 
     def get_dvwa(self, s, page_url):
         # Fetch the DVWA page within the established session.
-        response = s.get(page_url)
+        response = s.get(page_url, proxies=self.proxies, headers=self.headers)
         return response
 
     def post_dvwa(self, s, url, payload):
         # Post to DVWA
-        response = s.post(url, data={'input': payload})
+        response = s.post(url, data={'input': payload}, proxies=self.proxies, headers=self.headers)
         return response
 
     def get_csrf_token_and_cookie(self, s, url):

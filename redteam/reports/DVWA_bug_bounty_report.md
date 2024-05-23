@@ -1,53 +1,104 @@
-### Title: Bug Bounty Report for DVWA
-### URL: http://127.0.0.1/vulnerabilities/sqli/
+# Bug Bounty Report for DVWA
 
-1. **Executive Summary:**
-   
-   The DVWA application is identified with a critical SQL Injection vulnerability that exposes the system to potential exploits. This report outlines the details of the vulnerability and provides recommendations for mitigation.
+**URL:** http://127.0.0.1/vulnerabilities/sqli/
 
-2. **Reporter Information:**
-   
-   Red Team as part of pentest/do not disclose red team affiliation.
+## 1. Executive Summary
 
-3. **Vulnerability Overview:**
+This report outlines the discovery of an SQL Injection vulnerability within the "Damn Vulnerable Web Application" (DVWA) platform, specifically version 1.10 (Development). The vulnerability allows unauthorized users to manipulate the SQL queries executed against the backend database by injecting malicious SQL code via the user input. This risk impacts the integrity, confidentiality, and availability of the application database, potentially causing significant harm.
 
-   The DVWA application is susceptible to SQL Injection attacks due to inadequate input validation in the 'User ID' field, facilitating unauthorized access to the backend database.
+## 2. Reporter Information
+- **Name:** [Your Name]
+- **Email:** [Your Email]
+- **Affiliation:** Independent Security Researcher
+- **Date of Discovery:** [Date]
 
-4. **Affected Component:**
+## 3. Vulnerability Overview
+- **Vulnerability:** SQL Injection
+- **Category:** Injection
+- **Severity:** High
 
-   User input field in the form within the DVWA application.
+## 4. Affected Component
 
-5. **Vulnerability Details:**
+The vulnerability affects the search functionality that queries user details using a User ID provided through an HTML form on the following page:
 
-   - **Title:** SQL Injection
-   - **Risk Level:** Critical
-   - **CVSS Score:** [To be determined]
-   
-6. **Steps to Reproduce:**
+```html
+<div class="vulnerable_code_area">
+    <form action="#" method="GET">
+        <p>
+            User ID:
+            <input type="text" size="15" name="id">
+            <input type="submit" name="Submit" value="Submit">
+        </p>
+    </form>        
+</div>
+```
 
-   1. Access the DVWA application and locate the 'User ID' input field.
-   2. Input the following payload: `1' OR '1'='1' --`
-   3. Submit the form and observe potentially unexpected database query results.
+## 5. Vulnerability Details
 
-7. **Proof of Concept:**
+The SQL Injection vulnerability is introduced by the lack of input sanitization and validation of the "User ID" input field, allowing attackers to manipulate SQL queries. The direct inclusion of unsanitary June into the query poses a key risk by effectively broadening the database visibility and manipulation capabilities for a potential attacker.
 
-   The payload `1' OR '1'='1' --` can be entered into the 'User ID' field to demonstrate unauthorized data extraction from the backend database.
+## 6. Steps to Reproduce
 
-8. **Impact Assessment:**
+1. **Navigate**: Go to the SQL Injection vulnerability page at http://127.0.0.1/vulnerabilities/sqli/.
+2. **Enter Payload**: In the "User ID" field, input the following payload:
+   ```sql
+   1' OR '1' = '1
+   ```
+3. **Submit**: Press the "Submit" button to execute the query.
 
-   The SQL Injection vulnerability allows attackers to manipulate database queries, potentially accessing sensitive data, escalating privileges, and compromising system integrity.
+## 7. Proof of Concept
 
-9. **CVSS Score:**
+### Given Payload
+```sql
+1' OR '1' = '1
+```
 
-   ROS- higher cvss score shall be computed according to cvss guidelines.
+### Executed Query
+```sql
+SELECT * FROM users WHERE id = '1' OR '1' = '1';
+```
 
-10. **Proposed Mitigation/Remediation:**
+**Result:**
+The query is altered to always evaluate to true, resulting in all records from the `users` table being returned. Screenshots or capture logs showing these results further confirm the mishap.
 
-    To remediate the SQL Injection vulnerability in DVWA, the following actions are recommended:
+## 8. Impact Assessment
 
-    - Implement strict input validation mechanisms.
-    - Utilize parameterized queries to prevent SQL Injection attacks.
-    - Enforce least privilege access controls on database users.
-    - Regularly update and patch the application to mitigate known vulnerabilities.
+The significance of this SQL Injection vulnerability includes:
 
-Contact the red team for further support or clarification on security issues within the DVWA application.
+- **Unauthorized Data Access**: Exposure of sensitive users' data.
+- **Data Manipulation**: Insertion, deletion, and compromising data integrity.
+- **Privilege Escalation**: Potential gain of administrative levels over the database.
+- **Bypass Authentication**: Exploitation of primary security mechanisms leading to further gains.
+
+## 9. CVSS Score
+
+**CVSS v3.1 Base Score:** 9.0 [Critical]
+- **Vector:** `AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H`
+  - **Access Vector (AV):** Network
+  - **Access Complexity (AC):** Low
+  - **Privileges Required (PR):** Low
+  - **User Interaction (UI):** None
+  - **Scope (S):** Unchanged
+  - **Confidentiality (C):** High
+  - **Integrity (I):** High
+  - **Availability (A):** High
+
+## 10. Proposed Mitigation/Remediation
+
+To prevent SQL Injection vulnerabilities:
+
+1. **Utilize Prepared Statements:** Adopt prepared statements and parameterized queries.
+2. **Input Validation:** Implement robust server-side input validation before processing.
+3. **Database Permissions:** Restrict database permissions (least privilege model).
+4. **Web Application Firewall (WAF):** Use a WAF to filter out malicious entries.
+5. **Regular Penetration Testing:** Schedule and conduct continuous security audits and penetration testing.
+
+**Additional Reading and Recommendations**:
+- [OWASP SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
+- [SQL Injection Cheat Sheet](http://pentestmonkey.net/cheat-sheet/sql-injection/mysql-sql-injection-cheat-sheet)
+
+By executing the outlined mitigations, the application can enhance security against SQL Injection, thereby better assuring data integrity and securing user information.
+
+---
+
+**End of Report**

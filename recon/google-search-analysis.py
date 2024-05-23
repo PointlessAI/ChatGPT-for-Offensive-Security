@@ -1,7 +1,9 @@
 """
 Reconnaissance Techniques Using ChatGPT
 Google Search and analysis
-["Implement ChatGPT to analyze social media posts, extracting potential security lapses or useful information about the target's infrastructure.", 'Apply ChatGPT to process data from forums and tech blogs for mentions of the target and related vulnerabilities.', 'Use ChatGPT to summarize news articles and reports that mention the target, identifying potential entry points.', 'Train ChatGPT to recognize patterns in data leakage across various online platforms.']
+["Implement ChatGPT to analyze social media posts, extracting potential security lapses or useful information about the target's infrastructure.", 
+'Apply ChatGPT to process data from forums and tech blogs for mentions of the target and related vulnerabilities.', 
+'Use ChatGPT to summarize news articles and reports that mention the target, identifying potential entry points.']
 This script is for for training purposes only
 """
 import requests
@@ -67,6 +69,7 @@ def main():
     key=[YOUR_API_KEY]
     """
 
+    # Loop through first 4 pages of Google
     x = range(1, 4)
     search_res_arr = []
 
@@ -83,6 +86,7 @@ def main():
                 print(f"Snippet: {item['snippet']}")
                 print("-" * 80)
 
+    # Analyse search results and provide actionable intelligence
     google_res_analysis = ai.general_query(f"Analyse the search results in {search_res_arr} and provide an assessment of the company {query} current activities.")
     print(google_res_analysis)
 

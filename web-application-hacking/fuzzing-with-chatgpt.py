@@ -1,7 +1,10 @@
 """
 Exploiting Application Function with ChatGPT
 Fuzzing with ChatGPT
-['Integrate ChatGPT into the fuzzing process to generate intelligent, context-aware fuzz vectors.', 'Use ChatGPT to analyze fuzzing results and identify successful exploitation attempts.', 'Apply ChatGPT to automate the categorization and prioritization of vulnerabilities discovered through fuzzing.', 'Develop a ChatGPT-assisted approach to enhancing traditional fuzzing tools with AI capabilities.']
+['Integrate ChatGPT into the fuzzing process to generate intelligent, context-aware fuzz vectors.', 
+'Use ChatGPT to analyze fuzzing results and identify successful exploitation attempts.', 
+'Apply ChatGPT to automate the categorization and prioritization of vulnerabilities discovered through fuzzing.', 
+'Develop a ChatGPT-assisted approach to enhancing traditional fuzzing tools with AI capabilities.']
 This script is for training purposes only
 """
 import requests

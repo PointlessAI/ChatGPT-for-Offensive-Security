@@ -21,7 +21,7 @@ class Template(DVWA_Session,ChatGPT_Func, General_Func):
     def generate_payload(self, s):
         site = self.get_dvwa(s, "http://127.0.0.1/security.php")
         tag_name = [
-            "html", "head", "title", "meta", "body", 
+            "head", 
             "h1", "h2", "h3", "h4", "h5", "h6", "p", "a", "img", "div", 
             "span", "ul", "li", "table", "tr", 
             "td", "th", "link", "script", "form"
@@ -29,11 +29,12 @@ class Template(DVWA_Session,ChatGPT_Func, General_Func):
 
         for tag in tag_name:
             # print(site.text)
-            payload_content = self.red_team_query(f"Working with the following code: {site.text} Output all <{tag}> html. Include all inner elements and names, ids and classes. Iclude all inner content text. Ouput as html" \
+            payload_content = self.red_team_query(f"Working with the following code: {site.text} Output all <{tag}> html. \
+                                                  Include all inner elements and names, ids and classes. Iclude all inner content text. Ouput as html" \
                 ,f"{self.phishing_disclaimer},{self.no_markdown}"
             )
             #print(payload_content)
-            self.save_file(f"\\\<!---<{tag}> ------------------------------------------------------------------------------------------------->\n{payload_content}\n", "./", "tags", "html")
+            self.save_file(f"\\\<!---<{tag}> --------------------------------------------------------------->\n{payload_content}\n", f"{self.recon_dir}/output", "tags", "html")
 
             # Next function summarizes findings.
 
@@ -42,7 +43,7 @@ class Template(DVWA_Session,ChatGPT_Func, General_Func):
                 ,f"{self.phishing_disclaimer},{self.no_markdown}"
             )
             print(analyse_content)
-            self.save_file(f"\n\\\<!--- <{tag}> ------------------------------------------------------------------------------------------------->\n{analyse_content}", "./", "summary", "html")        
+            self.save_file(f"\n\\\<!---<{tag}> --------------------------------------------------------------->\n{analyse_content}", f"{self.recon_dir}/output", "summary", "html")        
         return #payload_content
     
     def crawl_site(self):

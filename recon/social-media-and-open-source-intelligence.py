@@ -1,7 +1,9 @@
 """
 Reconnaissance Techniques Using ChatGPT
 Social Media and Open Source Intelligence
-["Implement ChatGPT to analyze social media posts, extracting potential security lapses or useful information about the target's infrastructure.", 'Apply ChatGPT to process data from forums and tech blogs for mentions of the target and related vulnerabilities.', 'Use ChatGPT to summarize news articles and reports that mention the target, identifying potential entry points.', 'Train ChatGPT to recognize patterns in data leakage across various online platforms.']
+["Implement ChatGPT to analyze social media posts, extracting potential security lapses or useful information about the target's infrastructure.", 
+'Apply ChatGPT to process data from forums and tech blogs for mentions of the target and related vulnerabilities.', 
+'Use ChatGPT to summarize news articles and reports that mention the target, identifying potential entry points.']
 This script is for for training purposes only
 """
 import requests
@@ -117,7 +119,7 @@ def main():
 
     # Sample data for demonstration. In real world you would use API or web scraping
     company = "PointlessAI"
-    filepath = "/home/kali/shellassistant/training-assistant/code/scripts"
+    filepath = "/home/kali/shellassistant/training-assistant/offensive-security-chatgpt/scripts"
     filename = "linkedin"
     filetype = "py"
     posts = [" \
@@ -132,6 +134,7 @@ def main():
     ai.save_file(linkedin_script, filepath, filename, filetype)
 
     social_media_analysis = ai.analyze_social_media_posts(posts)
+    print(social_media_analysis)
     github_analysis = ai.get_github_data(company)
     process_data_res = ai.process_data(github_analysis)
 

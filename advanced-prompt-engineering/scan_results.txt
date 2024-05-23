@@ -1,0 +1,19 @@
+# Nmap 7.94SVN scan initiated Thu May 23 11:03:18 2024 as: nmap -sS -Pn -F -oN scan_results.txt pointlessai.com
+RTTVAR has grown to over 2.3 seconds, decreasing to 2.0
+RTTVAR has grown to over 2.3 seconds, decreasing to 2.0
+RTTVAR has grown to over 2.3 seconds, decreasing to 2.0
+RTTVAR has grown to over 2.3 seconds, decreasing to 2.0
+RTTVAR has grown to over 2.3 seconds, decreasing to 2.0
+RTTVAR has grown to over 2.3 seconds, decreasing to 2.0
+Nmap scan report for pointlessai.com (185.114.98.6)
+Host is up (2.9s latency).
+Other addresses for pointlessai.com (not scanned): 2a00:1ee0:2:207::b972:6206
+Not shown: 71 filtered tcp ports (no-response), 24 filtered tcp ports (host-unreach)
+PORT     STATE  SERVICE
+22/tcp   open   ssh
+80/tcp   open   http
+443/tcp  open   https
+3306/tcp open   mysql
+8443/tcp closed https-alt
+
+# Nmap done at Thu May 23 11:03:40 2024 -- 1 IP address (1 host up) scanned in 21.17 seconds

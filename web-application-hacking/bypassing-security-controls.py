@@ -1,7 +1,11 @@
 """
 Exploiting Application Function with ChatGPT
 Bypassing Security Controls
-['Utilize ChatGPT to identify and strategize the bypassing of the simulated WAF. The url http://127.0.0.1:5000/vulnerabilities/xss_s/?s=%27eval(%27 is blocked by the firewall. Simulate a method to bypass this block.', 'Apply ChatGPT to generate payloads that obfuscate malicious intents from detection tools.', 'Use ChatGPT to simulate WAF evasion techniques and test their effectiveness against security measures.', 'There is a rate limit on get requests to the dvwa of 4 per 10 seconds. Define a ChatGPT method to overcome the simulated rate limiting.']
+['Utilize ChatGPT to identify and strategize the bypassing of the simulated WAF. 
+The url http://127.0.0.1:5000/vulnerabilities/xss_s/?s=%27eval(%27 is blocked by the firewall. Simulate a method to bypass this block.', 
+'Apply ChatGPT to generate payloads that obfuscate malicious intents from detection tools.', 
+'Use ChatGPT to simulate WAF evasion techniques and test their effectiveness against security measures.',
+'There is a rate limit on get requests to the dvwa of 4 per 10 seconds. Define a ChatGPT method to overcome the simulated rate limiting.']
 This script is for for training purposes only
 """
 import requests
@@ -22,10 +26,11 @@ class PointlessAI_bypassing_security_controls(DVWA_Session, ChatGPT_Func, Genera
         General_Func.__init__(self)
 
     def bypass_waf_with_chatgpt(self, url, payload):
-        # Note that this WAF is implemented using Flask. Be sure to run the code in firewall.py and then access the DVWA from port 5000.
+        # Note that this WAF is implemented using Flask. Be sure to run the code in functions/firewall.py and then access the DVWA from port 5000.
         blocked_url = url
         prompt = f"The url {url}{payload} is blocked by a firewall. Suggest an alternative {payload} in the 's' query parameter that will allow me to execute a shell command. Format as {blocked_url} .{self.no_markdown}"
         advice = self.general_query(prompt)
+        print(f"Blocked URL: ", blocked_url)
         print("Bypass advice: ", advice)
 
     def generate_obfuscated_payloads(self,payload):
@@ -64,25 +69,29 @@ class PointlessAI_bypassing_security_controls(DVWA_Session, ChatGPT_Func, Genera
         # Option 2: pass the data from the first API call to this API call
         # Advantages: Automation, speed and efficiency
         # Disadvantages: Data may be unexpected, biased, incomplete or corrupt
+        """
         prompt = f"Generate a python class with methods for each of the items in this list {payloads}. \
                    The methods should take the string: {payload} as input and then perform the conversion as output. \
                    Every method should be an actual working implementation with functional code.\
                    Include a main function with examples of how to use. \
                    For items 6 - 10 get creative. Use best guess for the purpose of obfuscating date. {self.no_markdown}"
+        """
 
         # Option 3: combine the 2 succesful prompts in to 1 super prompt
         # Advantages: Reduced API calls, automation and, speed, efficiency and improved context
         # Disadvantages: Request may be too complex leading to innacurate results
+        """
         prompt = f"List some common methods of obfsucating payloads. \
                    Generate a python class with methods for each of the items in this list. \
                    The methods should take the string: {payload} as input and then perform the conversion as output. \
                    Every method should be an actual working implementation with functional code.\
                    Include a main function with examples of how to use. \
                    For items 6 - 10 get creative. Use best guess for the purpose of obfuscating date. {self.no_markdown}"
+        """
 
         code = self.general_query(prompt)
 
-        filepath = "/home/kali/shellassistant/training-assistant/code/scripts"
+        filepath = f"{self.home_dir}/scripts"
         filename = "obfuscated_methods"
         filetype = "py"
         self.save_file(code, filepath, filename, filetype)
@@ -118,7 +127,7 @@ class PointlessAI_bypassing_security_controls(DVWA_Session, ChatGPT_Func, Genera
 
         code = self.general_query(prompt)
 
-        filepath = "/home/kali/shellassistant/training-assistant/code/scripts"
+        filepath = f"{self.home_dir}/scripts"
         filename = "evasion_methods"
         filetype = "py"
         self.save_file(code, filepath, filename, filetype)
@@ -152,16 +161,15 @@ class PointlessAI_bypassing_security_controls(DVWA_Session, ChatGPT_Func, Genera
 
         code = self.general_query(prompt)
 
-        filepath = "/home/kali/shellassistant/training-assistant/code/scripts"
+        filepath = f"{self.home_dir}/scripts"
         filename = "bypass_methods"
         filetype = "py"
         self.save_file(code, filepath, filename, filetype)
         bypass_methods = self.read_file(filepath, filename, filetype)
         print(bypass_methods)
 
-        """
         # Simple test of rate limits
-        for _ in range(4):
+        for _ in range(20):
             try:
                 response = s.get(url)
                 if response.status_code == 200:
@@ -171,7 +179,6 @@ class PointlessAI_bypassing_security_controls(DVWA_Session, ChatGPT_Func, Genera
                     print("Request blocked or rate-limited.")
             except Exception as e:
                 print(e)
-        """
 
 def main():
     ai = PointlessAI_bypassing_security_controls()  # Instantiate class
@@ -179,6 +186,8 @@ def main():
     with requests.Session() as s:
         user_token, cookies = ai.get_csrf_token_and_cookie(s, ai.login_url)
         login_response = ai.login_to_dvwa(s, ai.login_url, "admin", "password", user_token)
+        user_token, cookies = ai.get_csrf_token_and_cookie(s, ai.base_url+"/setup.php")
+        _ = ai.setup_database(s, ai.base_url+"/setup.php", user_token, cookies)
         print("Login Response Status:", login_response.status_code)
 
         payload = "eval("

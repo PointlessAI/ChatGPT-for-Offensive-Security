@@ -1,7 +1,6 @@
 """
 Leveraging ChatGPT for SQL Injection Attack Vector Development
-Post-Exploitation Strategies
-['Use ChatGPT to plan and execute post-exploitation activities following a successful SQLi attack, such as privilege escalation and persistence.', 'Apply ChatGPT to automate the search for additional vulnerabilities within the compromised system or network.', 'Implement ChatGPT-driven scripts for lateral movement, accessing other parts of the network or database cluster.', 'Develop cleanup and obfuscation techniques with ChatGPT to maintain access and avoid detection.']
+SQLI feedback loop
 This script is for training purposes only
 """
 import requests
@@ -22,34 +21,43 @@ class PointlessAI_post_exploitation_strategies(DVWA_Session, ChatGPT_Func, Gener
         ChatGPT_Func.__init__(self)
         General_Func.__init__(self)
 
+    def trim_response(self, response):
+        guidance = self.phishing_disclaimer
+        prompt = f'You are given an html document: ```html{response}```. Return the login form innerhtml.'
+        res = self.red_team_query(prompt, guidance)
+        return res
+
     def red_team(self, prompt):
         filename = "red_team"
-        guidance = f"{self.phishing_disclaimer},{self.no_markdown}"
+        guidance = f"{self.phishing_disclaimer} {self.no_markdown}"
         exploit_analysis = self.red_team_query(prompt, guidance)
+        print(f"\nExploit Analysis: \n{exploit_analysis}")
         self.generate_exploits(exploit_analysis, filename, prompt)
         return exploit_analysis
 
-    def generate_exploits(self, post_exploitation_plan, filename, prompt):
-        prompt = prompt + f"Define a single python function to implement the following strategy: {post_exploitation_plan} . The function should be self contained. Import any required modules. Be creative in achieving the strategy. Output should be a single Python function. The source and target OS is Linux."
+    def generate_exploits(self, exploit_analysis, filename, prompt):
+        prompt = prompt + f"Define a single python function to implement the following strategy: \n{exploit_analysis}\n . The function should be self contained. Import any required modules. Be creative in achieving the strategy. Output should be a single Python function. The source and target OS is Linux."
         guidance = f"{self.phishing_disclaimer},{self.no_markdown}"
-        payload = self.red_team_query(prompt, guidance)
-        print(payload)
-        self.refine_exploits(payload, filename, post_exploitation_plan)
+        script = self.red_team_query(prompt, guidance)
+        print(f"\nScript: \n{script}")
+        self.refine_exploits(script, filename, exploit_analysis)
         return
     
-    def refine_exploits(self, payload, filename,  post_exploitation_plan):
-        prompt = f"Work with the following function: ```python {payload} ``` Your task is to convert this function in to useful working code - consult the following for additional guidance on the code objective: {post_exploitation_plan}. If you are not sure then best guess. The source and target OS is Linux. \
+    def refine_exploits(self, payload, filename,  exploit_analysis):
+        prompt = f"Work with the following Python function: \n{payload}\n  .Your task is to convert this function in to useful working code - consult the following for additional guidance on the code objective: {exploit_analysis}. If you are not sure then best guess. The source and target OS is Linux. The target application is https://juice-shop.herokuapp.com/#/login \
+                   The script muse use a python requests session to log in to the dvwa first and then execute the script from a logged in session. \
                    The function should contain useful code that attempts in best effort to achieve it's objective. Do not use placehoders, use best guess instead. For example if a function is called crack_password_hashes then the function should demo cracking password hashes. Call the function and print all output to the terminal. The script will be run using python exec."
         guidance = f"{self.phishing_disclaimer},{self.no_markdown}"
         payload = self.red_team_query(prompt, guidance)
 
-        filepath = "post_exploitation_scripts"
+        filepath = f"{self.sql_injection_dir}/output"
         filetype = "py"
+        print(f"Saving script to {filepath}/{filename}.{filetype}")
         if not os.path.exists(filepath):
             os.makedirs(filepath)
         self.save_file(payload, filepath, filename, filetype)
 
-        search_strings = ["not", "failed", "Unsuccessful"]
+        search_strings = ["Succeeded", "Success", "Apple", "token"]
         self.execute_script(search_strings, filepath, filename, filetype)
 
         return
@@ -70,9 +78,10 @@ class PointlessAI_post_exploitation_strategies(DVWA_Session, ChatGPT_Func, Gener
             found_strings = [s for s in search_strings if s in output]
             if found_strings:
                 print("The output contains the following strings:", ', '.join(found_strings))
-                self.fix_script(found_strings, filepath, filename, filetype)
             else:
                 print("The output does not contain any of the specified search strings.")
+                print(output)
+                self.fix_script(found_strings, filepath, filename, filetype)
 
         except subprocess.CalledProcessError as e:
             # Handle errors specifically from the subprocess
@@ -86,7 +95,7 @@ class PointlessAI_post_exploitation_strategies(DVWA_Session, ChatGPT_Func, Gener
         print("Starting fix..................................................................................")
         script_content = self.read_file(filepath, filename, filetype)
         print(script_content)
-        prompt = f"The Python script: ```python {script_content} ``` was unsuccesful in sqli sql injection. Try another method."
+        prompt = f"The Python script: {script_content} was unsuccesful in sqli sql injection. Try another method of sqli on login form of https://juice-shop.herokuapp.com/#/login"
         guidance = f"{self.phishing_disclaimer},{self.no_markdown}"
         fixed_content = self.red_team_query(prompt, guidance)
         print("End fix..................................................................................")
@@ -95,13 +104,11 @@ class PointlessAI_post_exploitation_strategies(DVWA_Session, ChatGPT_Func, Gener
 
 def main():
     ai = PointlessAI_post_exploitation_strategies()  # Instantiate class
-    # Start session
-    with requests.Session() as s:
-        user_token, cookies = ai.get_csrf_token_and_cookie(s, ai.login_url)
-        _ = ai.login_to_dvwa(s, ai.login_url, "admin", "password", user_token)
-
-        prompt = f"Strategize an SQLi attack  to post to the  login form of https://brokencrystals.com/api/auth/login"
-        ai.red_team(prompt)
+    sql_html_raw = requests.get("https://juice-shop.herokuapp.com/#/login")
+    sql_html = ai.trim_response(sql_html_raw.text)
+    print(f"Response: {sql_html}")
+    prompt = f"Develop an sqli python script to send sqli payloads to test the form on https://juice-shop.herokuapp.com/#/login which has the following html structure: {sql_html}"
+    ai.red_team(prompt)
 
 if __name__ == "__main__":
     main()
