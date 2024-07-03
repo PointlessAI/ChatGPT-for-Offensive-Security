@@ -24,7 +24,7 @@ The training materials in this repository are licensed under the Creative Common
 - Clone the Repository
 - Set API keys either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
 ```python
-# Initialize with ChatGPT API
+# /class/chatgpt_func.py
 _ = load_dotenv(find_dotenv())
 self.client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY"),
