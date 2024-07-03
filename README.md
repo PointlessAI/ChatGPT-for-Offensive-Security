@@ -17,5 +17,17 @@ The training materials in this repository are licensed under the Creative Common
 - An OpenAI API key
 
 ## Installation
+* First virtual environment:
+- python -m venv yourname-venv
+- source yourname-venv/bin/activate
+* Then get repo:
 - Clone the Repository
+- Set API keys either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+```python
+        # /class/chatgpt_func.py
+        self.githubapi_key = os.environ.get("GITHUB_API_KEY")
+        self.google_api_key = os.environ.get("google_api_key")
+        self.google_cse_id = os.environ.get("google_cse_id")
+```
+- pip install -r requirements.txt
 
