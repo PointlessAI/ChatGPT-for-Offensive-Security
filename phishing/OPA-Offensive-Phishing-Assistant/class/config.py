@@ -5,9 +5,9 @@ class Config():
     def __init__(self):
 
         # Set target here
-        self.company_name = "Mind Tools"
+        self.company_name = ""
         # Recommended target url is about page
-        self.url = "https://www.mindtools.com"
+        self.url = ""
         self.target = f"{self.url}" # Add path if required 
 
         self.company_name_f = self.clean_filename(self.company_name)
