@@ -5,10 +5,10 @@ class Config():
     def __init__(self):
 
         # Set target here
-        self.company_name = "PointlessAI"
+        self.company_name = "Mind Tools"
         # Recommended target url is about page
-        self.url = "https://pointlessai.com/"
-        self.target = f"{self.url}phabout.html"
+        self.url = "https://www.mindtools.com"
+        self.target = f"{self.url}" # Add path if required 
 
         self.company_name_f = self.clean_filename(self.company_name)
 
