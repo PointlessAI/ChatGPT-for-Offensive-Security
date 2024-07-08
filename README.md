@@ -15,6 +15,10 @@ The training materials in this repository are licensed under the Creative Common
 ## Prerequisites
 - Python 3.7 or higher
 - An OpenAI API key
+- DVWA on Docker
+**https://hub.docker.com/r/vulnerables/web-dvwa**
+*docker run --rm -it -p 80:80 vulnerables/web-dvwa*
+* Best run in Kali
 
 ## Installation
 * First virtual environment:
