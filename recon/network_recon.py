@@ -56,7 +56,7 @@ def log_result(result, description):
         file.write(description + '\n' + str(result) + '\n\n')
 
 def main():
-    domain = 'www.ampol.com.au'
+    domain = 'pointlessai.com'
     analyzer = DomainAnalyzer()
 
     whois_result = analyzer.whois(domain)
