@@ -68,11 +68,30 @@ class PointlessAI_domain_and_ip_information_gathering(ChatGPT_Func, General_Func
 def main():
     ai = PointlessAI_domain_and_ip_information_gathering()
 
-    domain = "pointlessai.com"
-    # Conduct domain and IP information gathering
-    #domain_details = ai.whois_lookup(domain); print(domain_details)
-    #cgpt_domain_details = ai.chatgpt_whois_lookup(domain); print(cgpt_domain_details)
+    domain = "www.ampol.com.au"
 
+    # Create analysis files if not exist
+    if not os.path.exists(f"{ai.recon_dir}/output/domain_analysis_results.txt"): 
+        with open(f"{ai.recon_dir}/output/domain_analysis_results.txt", 'w') as file: 
+            file.write("") 
+    if not os.path.exists(f"{ai.recon_dir}/output/domain_analysis_summary.txt"): 
+        with open(f"{ai.recon_dir}/output/domain_analysis_summary.txt", 'w') as file: 
+            file.write("") 
+
+    """
+    How to use:
+    set domain variable
+    Run chatgpt_whois_lookup
+    This will create a script within scripts dir
+    Run generated script (not set to auto run as often has import errors)
+    Then run chatgpt_dns_analysis method to aggregate data
+    """
+
+    # Conduct domain and IP information gathering
+    # domain_details = ai.whois_lookup(domain); print(domain_details) # whois_lookup function is to demo traditional methods for training example only
+    #cgpt_domain_details = ai.chatgpt_whois_lookup(domain); print(cgpt_domain_details)
+    
+    # After running scripts then execute:
     ai.chatgpt_dns_analysis(domain)
 
 if __name__ == "__main__":

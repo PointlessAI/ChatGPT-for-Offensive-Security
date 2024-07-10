@@ -4,14 +4,33 @@ import json
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from pathlib import Path
 import time
 
 class General_Func:
     def __init__(self):
-        self.home_dir = "/home/kali/shellassistant/training-assistant/offensive-security-chatgpt"
+        self.dir_name = "ChatGPT-for-Offensive-Security"
+        self.home_dir = str(self.find_directory(self.dir_name))
         self.recon_dir = self.home_dir + "/recon"
         self.web_app_hack_dir = self.home_dir + "/web-application-hacking"
         self.sql_injection_dir = self.home_dir + "/advanced-sql-injection"
+
+    def find_directory(self, name, start_path='.'):
+        start_path = Path(start_path).resolve()
+        for path in start_path.rglob(name):
+            if path.is_dir():
+                return path
+
+        # Check parent directories
+        parent_path = start_path
+        while parent_path != parent_path.parent:
+            parent_path = parent_path.parent
+            for path in parent_path.rglob(name):
+                if path.is_dir():
+                    print(f"Path is {name}")
+                    return path
+        print(f"{self.dir_name} not found.")
+        return None
 
     def save_file(self, content, filepath, filename, ext):
         with open(f"{filepath}/{filename}.{ext}", 'w') as file:
