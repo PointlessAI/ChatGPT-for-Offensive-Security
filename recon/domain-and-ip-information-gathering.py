@@ -6,6 +6,10 @@ Domain and IP Information Gathering
 'Utilize ChatGPT to interpret scan results and prioritize targets based on gathered domain information.']
 This script is for training purposes only
 """
+
+"""
+Running this script will produce a new file called network_recon.py - this file is available in current directory.
+"""
 import requests
 import whois
 import sys
@@ -49,8 +53,8 @@ class PointlessAI_domain_and_ip_information_gathering(ChatGPT_Func, General_Func
                 Include a main function with examples of how to use. Output from examples should include a description of the result and then appended to to filename: domain_analysis_results.txt in filepath: {self.recon_dir}/output/.  \
                 If you are unsure how to implement the tool then get creative. Use best guess in implelementing the tool to gather domain information. {self.no_markdown}"
         domain_info = self.general_query(prompt)
-        filepath = f"{self.home_dir}/scripts"
-        filename = f"{domain}-domain-info"
+        filepath = f"{self.home_dir}/output"
+        filename = f"{domain}_network_recon"
         filetype = "py"
         # Function called from general_func class to save file
         self.save_file(domain_info, filepath, filename, filetype)
